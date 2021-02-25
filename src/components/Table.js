@@ -48,3 +48,39 @@ const styles = () =>
                 users: this.state.users.sort((a, b) => a.name.last > b.name.last ? 1:-1)
             })
         }
+
+        render() {
+            const { classes } = this.props;
+            return (
+                <TableContainer component={Paper}>
+                    <Form search={this.state.search} handleInputChange={this.handleInputChange} />
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Image</TableCell>
+                                <TableCell align="right" onClick={()=> this.sortByName()}>Name</TableCell>
+                                <TableCell align="right">Phone Number</TableCell>
+                                <TableCell align="right">Email</TableCell>
+                                <TableCell align="right">DoB</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.users.filter(user => user.name.first.toLowerCase().includes(this.state.search.toLowerCase()) || user.name.last.toLowerCase().includes(this.state.search.toLowerCase())).map((user) => (
+                                <TableRow key={user.name}>
+                                    <TableCell component="th" scope="row">
+                                        <img src={user.picture.thumbnail}></img>
+                                    </TableCell>
+                                    <TableCell align="right">{user.name.first} {user.name.last}</TableCell>
+                                    <TableCell align="right">{user.phone}</TableCell>
+                                    <TableCell align="right">{user.email}</TableCell>
+                                    <TableCell align="right">{user.dob.date}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            );
+        }
+    }
+    
+    export default withStyles(styles)(BasicTable);
